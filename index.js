@@ -61,6 +61,9 @@ function checkLetter (letter){
 	}
 	else{
 		wrongLetters.push(letter);
+		if(guessesLeft = 0){
+		prompt();
+	}
 		
 	}
 	console.log(blanksAndSuccesses);
@@ -71,25 +74,27 @@ var prompt = function(){
 	if(guessesLeft !== 0 && numBlanks !== 0){
 		inquirer.prompt(questions).then(function(answer){
 		JSON.stringify(answer, null, " ");
-			checkLetter(answer);
-			if(answer.guess != lettersInWord){
-				if(guessesLeft != 0){
-					console.log(lettersInWord);
-					guessArray.push(answer.guess);
-					guessesLeft--;
-					console.log("incorrect. you have: " + guessesLeft + " guesses left");
-					console.log(guessArray);
-					prompt();
-				}
-			}
+	
+				checkLetter(answer.guess);
+			
+			// if(answer.guess != lettersInWord){
+			// 	if(guessesLeft != 0){
+			// 		console.log(lettersInWord);
+			// 		guessArray.push(answer.guess);
+			// 		guessesLeft--;
+			// 		console.log("incorrect. you have: " + guessesLeft + " guesses left");
+			// 		console.log(guessArray);
+			// 		prompt();
+			// 	}
+			// }
 
-			else if (answer.guess = lettersInWord){
-				console.log(lettersInWord);
-				guessArray.push(answer.guess);
-				console.log("correct. you still have " + guessesLefts + " guesses left");
-				numBlanks--;
-				prompt();
-			}
+			// else if (answer.guess = lettersInWord){
+			// 	console.log(lettersInWord);
+			// 	guessArray.push(answer.guess);
+			// 	console.log("correct. you still have " + guessesLefts + " guesses left");
+			// 	numBlanks--;
+			// 	prompt();
+			//}
 
 		});
 	}
