@@ -61,7 +61,7 @@ function checkLetter (letter){
 	}
 	else{
 		wrongLetters.push(letter);
-		if(guessesLeft = 0){
+		if(guessesLeft != 0){
 		prompt();
 	}
 		
