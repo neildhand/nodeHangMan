@@ -1,12 +1,26 @@
 var inquirer = require("inquirer");
 var fs = require("fs");
 
+var wordArray = ["Awkward", "Bagpipes", "Banjo", "Bungler", "Croquet", "Crypt", "Dwarves", "Fervid", "Fishhook", "Fjord", "Gazebo", "Gypsy", "Haiku", "Haphazard", "Hyphen", "Ivory", "Jazzy", "Jiffy", "Jinx", "Jukebox", "Kayak", "Kiosk", "Klutz", "Memento", "Mystify", "Numbskull", "Ostracize", "Oxygen", "Pajama", "Phlegm", "Pixel", "Polka", "Quad", "Quip", "Rhythmic", "Rogue", "Sphinx", "Squawk", "Swivel", "Toady", "Twelfth", "Unzip", "Waxy", "Wildebeest", "Yacht", "Zealous", "Zigzag", "Zippy", "Zombie"];
+
+
+
+var guessArray =[];
+var randomWord = Math.floor(Math.random() * 44);
+var generatedWord = wordArray[randomWord].toLowerCase();
+var lettersInWord = generatedWord.split("");
+var numBlanks = lettersInWord.length;
+var guessesLeft = 9;
+var wrongLetters = [];
+var blanksAndSuccesses = [];
+
 function Word(){
+	this.word = word;
 
 }
 
 function Letter(){
-
+	this.letter = letter;
 }
 
 
@@ -17,70 +31,69 @@ var questions = [
  	name: "guess"
 }];
 
-fs.readFile("./hangMan.txt", "utf-8", function read(err, data){
-
-	var guessArray =[];
-
-	var dataArray = data.split(", ");
-	var randomWord = Math.floor(Math.random() * 44);
-	var generatedWord = dataArray[randomWord];
-	var lettersInWord = generatedWord.split("");
-	var numBlanks = lettersInWord.length;
-	var guessesLeft = 9;
-	var wrongLetters = [];
-	var blanksAndSuccesses = [];
 
 function readWord(){
-		if (err){
-			return console.log(err);
-		}
 		
 		for(var i = 0; i < numBlanks; i++){
 			blanksAndSuccesses.push("_");
 		}
 		console.log(blanksAndSuccesses.join(" "));
 		console.log(lettersInWord);
-		console.log(numBlanks);
-		console.log(generatedWord);	
+		// console.log(numBlanks);
+		// console.log(generatedWord);	
 
 }
-readWord();
 
-function checkLetters(letter){
+function checkLetter (letter){
 	var isLetterInWord = false;
-
 	for(var i = 0; i < numBlanks; i++){
 		if(generatedWord[i] == letter){
 			isLetterInWord = true;
 		}
 	}
-
 	if(isLetterInWord){
-		for(var i = 0; i <numBlanks; i++){
+		for(var i = 0; i < numBlanks; i++){
 			if(generatedWord[i] == letter){
 				blanksAndSuccesses[i] = letter;
 			}
-		
-			else{
-				wrongLetters.push(letter);
-				guessesLeft--;
-				console.log("wrong letters: " + wrongLetters[i]);
-			}
 		}
+		prompt();
+	}
+	else{
+		wrongLetters.push(letter);
+		
+	}
+	console.log(blanksAndSuccesses);
+}
+
+var prompt = function(){
+
+	if(guessesLeft !== 0 && numBlanks !== 0){
+		inquirer.prompt(questions).then(function(answer){
+		JSON.stringify(answer, null, " ");
+			checkLetter(answer);
+			if(answer.guess != lettersInWord){
+				if(guessesLeft != 0){
+					console.log(lettersInWord);
+					guessArray.push(answer.guess);
+					guessesLeft--;
+					console.log("incorrect. you have: " + guessesLeft + " guesses left");
+					console.log(guessArray);
+					prompt();
+				}
+			}
+
+			else if (answer.guess = lettersInWord){
+				console.log(lettersInWord);
+				guessArray.push(answer.guess);
+				console.log("correct. you still have " + guessesLefts + " guesses left");
+				numBlanks--;
+				prompt();
+			}
+
+		});
 	}
 }
-if(guessesLeft !== 0 && numBlanks !== 0){
-	inquirer.prompt(questions).then(function(answer){
-		JSON.stringify(answer, null, " ");
-		readWord();
-		checkLetters(answer);
-		guessesLeft--
-	});
-}
-
-
-
-});
-
-
+readWord();
+prompt();
 
