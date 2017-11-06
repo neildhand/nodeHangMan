@@ -51,6 +51,7 @@ function checkLetter (letter){
 			isLetterInWord = true;
 		}
 	}
+
 	if(isLetterInWord){
 		for(var i = 0; i < numBlanks; i++){
 			if(generatedWord[i] == letter){
@@ -61,8 +62,11 @@ function checkLetter (letter){
 	}
 	else{
 		wrongLetters.push(letter);
+	
+		console.log("guesses left: " + guessesLeft);
+		console.log("wrong gueses: " + wrongLetters);
 		if(guessesLeft != 0){
-		prompt();
+		prompt();	
 	}
 		
 	}
@@ -75,7 +79,9 @@ var prompt = function(){
 		inquirer.prompt(questions).then(function(answer){
 		JSON.stringify(answer, null, " ");
 	
-				checkLetter(answer.guess);
+		checkLetter(answer.guess);
+
+		//if(guessesLeft = 0){}
 			
 			// if(answer.guess != lettersInWord){
 			// 	if(guessesLeft != 0){
@@ -101,4 +107,5 @@ var prompt = function(){
 }
 readWord();
 prompt();
+guessesLeft--;
 
